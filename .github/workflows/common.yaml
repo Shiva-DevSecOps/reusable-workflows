@@ -16,10 +16,6 @@ on:
 jobs:
   ci:
     runs-on: self-hosted
-
-    outputs:
-      appVersion: ${{ steps.package-version.outputs.version }}
-
     steps:
       - name: checkout Code
         uses: actions/checkout@v5
@@ -30,5 +26,4 @@ jobs:
       - name: print inputs
         run: |
           echo "Project is ${{ inputs.project }}"
-          echo "Component is ${{ inputs.component }}"
-          echo "Application Type is ${{ inputs.app_type }}"
+          
