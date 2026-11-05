@@ -47,4 +47,16 @@ jobs:
       run: |
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125615103.dkr.ecr.us-east-1.amazonaws.com
         docker push 211125615103.dkr.ecr.us-east-1.amazonaws.com/${{ inputs.project }}/${{ inputs.component }}:${{ steps.package-version.outputs.version }}
-        
+
+  cd: # job name
+    runs-on: self-hosted
+    needs: ci
+    env:
+      appVersion: ${{ needs.ci.outputs.appVersion }}
+    steps:
+      - name: checkout deploy code
+        uses: actions/checkout@v5
+        with:
+          repository: Shiva-DevSecOps/catalogue-deploy
+      - name: check the files
+        run: ls -l
