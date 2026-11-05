@@ -12,40 +12,21 @@ on:
       app_type:
         required: true
         type: string
-    secrets: 
+
+    secrets:
       AWS_ACCESS_KEY_ID:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
 
 jobs:
-  ci: #job name
+  ci:
     runs-on: self-hosted
-    outputs:
-      appVersion: ${{ steps.package-version.outputs.version }}
+
     steps:
-      - name: checkout Code
+      - name: Checkout Code
         uses: actions/checkout@v5
 
-      - name: check the files
-        run: ls -l
-
-      - name: print inputs
-        run: echo "Project is ${{ inputs.project }}"
-
-      - name: Get app version
-        id: package-version
-        run: echo "version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
-
-      - name: print app version
-        run: echo ${{ steps.package-version.outputs.version }}
-      
-      - name: install dependencies
-        run: npm install    
-
-      - name: docker build
-        run: docker build -t 211125615103.dkr.ecr.us-east-1.amazonaws.com/roboshop/${{ inputs.project }}/${{ inputs.component }}:${{ steps.package-version.outputs.version }} .
-    
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
